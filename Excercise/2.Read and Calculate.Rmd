@@ -1,0 +1,141 @@
+# *Read a csv file*
+
+## Read csv files in csv folder
+
+```{r}
+google <- read.csv("csv/googleplaystore.csv", sep = ",")
+cars <- read.csv("csv/Auto.csv", sep = ",")
+
+View(google)
+View(cars)
+```
+
+## Read csv file through url
+
+```{r}
+url <- "https://github.com/rudeboybert/fivethirtyeight/blob/master/data-raw/congress-age/congress-terms.csv"
+congress <- read.csv(url)
+View(congress)
+```
+
+## Get access to a particular column
+
+Using array
+
+```{r}
+google[, 3]
+```
+
+Or by typing the name of the column
+
+```{r}
+google$Rating
+```
+
+```{r}
+unique(google$Rating)
+```
+
+# ***Calculation***
+
+## Adding Up
+
+```{r}
+# Sum up the particular elements
+sum(google$Rating[1], google$Rating[2], google$Rating[3])
+```
+
+```{r}
+# We cannot sum it up directly because NaN exists.
+sum(google$Rating)
+```
+
+```{r}
+# We can type "na.rm = TRUE" to ignore NaN elements.
+sum(google$Rating, na.rm = TRUE)
+```
+
+```{r}
+sum(cars$horsepower, na.rm = TRUE)
+```
+
+There is a "?" in the column. We should replace it.
+
+```{r}
+cars$horsepower <- gsub("\\?", NA, cars$horsepower)
+# Using as.numeric() to change the elments to numbers
+sum(as.numeric(cars$horsepower), na.rm = TRUE)
+```
+
+## **Simple Calculations**
+
+### **Add**
+
+```{r}
+sum(as.numeric(cars$horsepower), na.rm = TRUE)
+```
+
+### **Mean value**
+
+```{r}
+mean(as.numeric(cars$horsepower), na.rm = TRUE)
+```
+
+### **Median**
+
+```{r}
+median(as.numeric(cars$horsepower), na.rm = TRUE)
+```
+
+### **Maximum and Minimum**
+
+```{r}
+max(as.numeric(cars$horsepower), na.rm = TRUE)
+min(as.numeric(cars$horsepower), na.rm = TRUE)
+range(as.numeric(cars$horsepower), na.rm = TRUE)
+```
+
+### **Standard Deviation and Variance**
+
+```{r}
+sd(google$Rating, na.rm = TRUE)
+var(google$Rating, na.rm = TRUE)
+```
+
+### **Length (within and without NaN)**
+
+```{r}
+length(google$Rating)
+
+# Count the number of the elements which are not NaN.
+length(google$Rating[!is.na(google$Rating)])
+
+# Count the number of the elements which are NaN.
+length(google$Rating[is.na(google$Rating)])
+```
+
+### **Sort and Order**
+
+```{r}
+# Sort the values.
+sort(as.numeric(cars$horsepower))
+sort(as.numeric(cars$horsepower), decreasing = TRUE)
+
+# Present the order.
+order(as.numeric(cars$horsepower))
+```
+
+### **Quantile**
+
+```{r}
+quantile(as.numeric(cars$horsepower), na.rm = TRUE)
+```
+
+# *Factor*
+
+factor is one-dimensional
+
+```{r}
+yearFactor <- factor(cars$year, exclude = NA)
+levels(yearFactor)
+```

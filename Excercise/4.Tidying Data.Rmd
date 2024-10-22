@@ -1,0 +1,166 @@
+# *Tidying Data*
+
+## dplyr
+
+### Select Columns
+
+```{r}
+load("C:/Users/22507/R Excercises/.RData")
+```
+
+```{r}
+# Select certain columns.
+dplyr::select(
+  cars, 
+  !c(cylinders, name, origin, year) # Except for cylinders, name, origin, year.
+)
+```
+
+### Ends with ...
+
+```{r}
+dplyr::select(
+  google, 
+  c(ends_with("Ver")) # Select columns which end with "Ver".
+)
+```
+
+### Filter
+
+```{r}
+dplyr::filter(
+  dplyr::select(
+    cars, 
+    !c(cylinders, name, year)
+  ),
+  origin == "3" # Only includes origin of 3.
+)
+
+```
+
+## Pipe Operator
+
+```{r}
+cars |>
+  select(!c(cylinders, name, year)) |>
+  filter(origin == "3")
+```
+
+### Arrange
+
+```{r}
+cars |>
+  select(!c(cylinders, name, year)) |>
+  filter(origin == "3") |>
+  arrange(desc(horsepower), weight, mpg) # Arrange in order and descending order.
+```
+
+### Distinct
+
+```{r}
+# Only look at name and year.
+cars |>
+  distinct(name, year)
+```
+
+### Slice
+
+```{r}
+# Find the cars which has the biggest horsepower in each year.
+
+# slice_head
+#       tail
+#       max
+#       min
+
+cars |>
+  select(c(name, year, horsepower)) |>
+  group_by(year) |>
+  arrange(desc(is.na(horsepower))) |>
+  slice_head()
+```
+
+### Summarize
+
+```{r}
+# Counts the number of cars in each year.
+cars |>
+  group_by(year) |>
+  summarize(cars = n())
+```
+
+## Pivoting
+
+```{r}
+students <- read.csv("csv/students.csv")
+View(students)
+```
+
+```{r}
+students <- read.csv("csv/students.csv")
+students <- pivot_wider(
+  students,
+  id_cols = student,
+  names_from = attribute,
+  values_from = value
+)
+View(students)
+```
+
+```{r}
+# Calculate average GPA
+students$GPA <- as.numeric(students$GPA)
+
+students |>
+  group_by(major) |>
+  summarize(GPA = mean(GPA))
+```
+
+## Stringr
+
+```{r}
+# Tally votes for favorite shows.
+shows <- read.csv("csv/shows.csv")
+
+shows |>
+  group_by(show) |>
+  summarize(votes = n()) |>
+  ungroup() |>
+  arrange(desc(votes))
+# There is more than one "Avatar".
+```
+
+### Clean up inner whitespace
+
+```{r}
+shows <- read.csv("shows.csv")
+
+# Clean up inner whitespace
+shows$show <- shows$show |>
+  str_trim() |>
+  str_squish()
+
+shows |>
+  group_by(show) |>
+  summarize(votes = n()) |>
+  ungroup() |>
+  arrange(desc(votes))
+```
+
+### Clean up capitalization
+
+```{r}
+shows <- read.csv("csv/shows.csv")
+
+# Clean up capitalization
+shows$show <- shows$show |>
+  str_trim() |>
+  str_squish() |>
+  str_to_title()
+
+shows |>
+  group_by(show) |>
+  summarize(votes = n()) |>
+  ungroup() |>
+  arrange(desc(votes))
+```

@@ -1,0 +1,218 @@
+# *Visualizing Data*
+
+## ggplot2
+
+```{r}
+votes <- read.csv("csv/votes.csv")
+View(votes)
+```
+
+### Add x and y aesthetics
+
+```{r}
+# Add x and y aesthetics.
+
+votes <- read.csv("csv/votes.csv")
+
+ggplot(votes, aes(x = candidate, y = votes)) +
+  geom_col()
+```
+
+## Adjusting Scales
+
+```{r}
+# Adjust y scale
+
+votes <- read.csv("csv/votes.csv")
+
+ggplot(votes, aes(x = candidate, y = votes)) + 
+  geom_col() + 
+  scale_y_continuous(limits = c(0, 250))
+```
+
+## Labels
+
+```{r}
+votes <- read.csv("csv/votes.csv")
+
+ggplot(votes, aes(x = candidate, y = votes)) +
+  geom_col() +
+  scale_y_continuous(limits = c(0, 250)) +
+  labs(
+    x = "Candidate",
+    y = "Votes",
+    title = "Election Results"
+  )
+```
+
+## Color
+
+```{r}
+votes <- read.csv("csv/votes.csv")
+
+ggplot(votes, aes(x = candidate, y = votes)) +
+  geom_col(aes(fill = candidate)) + # Fill candidate color
+  scale_y_continuous(limits = c(0, 250)) +
+  labs(
+    x = "Candidate",
+    y = "Votes",
+    title = "Election Results"
+  )
+```
+
+```{r}
+votes <- read.csv("csv/votes.csv")
+
+ggplot(votes, aes(x = candidate, y = votes)) +
+  geom_col(aes(fill = candidate)) + # Fill candidate color
+  scale_fill_viridis_d("Candidate") + # viridis
+  scale_y_continuous(limits = c(0, 250)) +
+  labs(
+    x = "Candidate",
+    y = "Votes",
+    title = "Election Results"
+  )
+```
+
+## Theme
+
+```{r}
+# Adjust ggplot theme
+
+votes <- read.csv("csv/votes.csv")
+
+ggplot(votes, aes(x = candidate, y = votes)) +
+  geom_col(aes(fill = candidate)) +
+  scale_y_continuous(limits = c(0, 250)) +
+  labs(
+    x = "Candidate",
+    y = "Votes",
+    title = "Election Results"
+  ) +
+  theme_classic() # Classic theme
+```
+
+## Saving Plots
+
+```{r}
+votes <- read.csv("csv/votes.csv")
+
+p <- ggplot(votes, aes(x = candidate, y = votes)) +
+  geom_col(aes(fill = candidate)) +
+  scale_y_continuous(limits = c(0, 250)) +
+  labs(
+    x = "Candidate",
+    y = "Votes",
+    title = "Election Results"
+  ) +
+  theme_classic()
+
+ggsave(
+  "plots/votes.png",
+  plot = p,
+  width = 1200,
+  height = 900,
+  units = "px"
+)
+```
+
+## Point
+
+```{r}
+# Introduce geom_point
+
+ggplot(
+  cars,
+  aes(x = mpg, y = horsepower)
+) +
+  geom_point()
+```
+
+### lable and theme
+
+```{r}
+ggplot(
+  cars,
+  aes(x = mpg, y = horsepower)
+) +
+  geom_point() +
+  geom_jitter() + # jitter can be used to help visualize points that overlap
+  labs(
+    x = "Miles Per Gallon",
+    y = "Horsepower",
+    title = "mpg and horsepower"
+  ) +
+  theme_classic()
+```
+
+### color, size and shape
+
+```{r}
+ggplot(
+  cars,
+  aes(x = mpg, y = horsepower)
+) +
+  geom_point() +
+  geom_jitter( # Add color, fill color, shape and size
+    color = "darkorchid",
+    fill = "orchid",
+    shape = 21,
+    size = 4
+  ) + 
+  labs(
+    x = "Miles Per Gallon",
+    y = "Horsepower",
+    title = "mpg and horsepower"
+  ) +
+  theme_classic()
+```
+
+## Visualizing Over Time
+
+```{r}
+load("RData/anita.RData")
+```
+
+```{r}
+ggplot(anita, aes(x = timestamp, y = wind)) +
+  geom_point()
+```
+
+### Line
+
+```{r}
+ggplot(anita, aes(x = timestamp, y = wind)) +
+  geom_line()
+```
+
+#### line type
+
+```{r}
+ggplot(anita, aes(x = timestamp, y = wind)) +
+  geom_line(
+    linetype = 1,
+    linewidth = 0.5
+  ) 
+```
+
+```{r}
+ggplot(anita, aes(x = timestamp, y = wind)) +
+  geom_line(
+    linetype = 1,
+    linewidth = 0.5
+  ) +
+  geom_point(
+    color = "skyblue4",
+    size = 2
+  ) +
+  geom_hline(
+    linetype = 3,
+    yintercept = 64
+  ) +
+  labs(
+    y = "Wind Speed (Knots)",
+    x = "Date",
+    title = "Hurricane Anita"
+  ) +
+  theme_classic()
+```

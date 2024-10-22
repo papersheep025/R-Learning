@@ -1,0 +1,66 @@
+# *Load R data*
+
+We can load R data to access to the results we saved before.
+
+```{r}
+load("C:/Users/22507/R Excercises/.RData")
+```
+
+**True and False**
+
+```{r}
+# Ask every single element
+google$Rating < 0
+google$Rating < 5.0
+```
+
+# *Logical Operators*
+
+```{r}
+as.numeric(cars$mpg) < 20.0 & as.numeric(cars$mpg) > 15.0
+as.numeric(cars$mpg) > 20.0 | as.numeric(cars$mpg) < 15.0
+```
+
+## **Any and All**
+
+```{r}
+any(as.numeric(cars$mpg) < 20.0 & as.numeric(cars$mpg) > 15.0)
+all(as.numeric(cars$mpg) < 20.0 & as.numeric(cars$mpg) > 15.0)
+```
+
+## **Keep and Remove**
+
+```{r}
+# Keep the mpgs which are less than 20 and larger than 15.
+cars$mpg[which(as.numeric(cars$mpg) < 20.0 & as.numeric(cars$mpg) > 15.0)]
+
+# Remove those elements
+cars$mpg[-which(as.numeric(cars$mpg) < 20.0 & as.numeric(cars$mpg) > 15.0)]
+```
+
+## Filter
+
+```{r}
+# Define a filter.
+filter <- cars$mpg < 20.0 & cars$mpg > 15.0
+cars$mpg[cars$mpg < 20.0 & cars$mpg > 15.0]
+```
+
+# Save
+
+## Difference between csv and RData
+
+CSV(Comma Separated Values) is just a **plain text**. You can simply open it and see what is in the csv file.
+
+RData lets us save **an actual RData** **structure** to a file.
+
+```{r}
+# Save the the file.
+save(filter, file = "RData/mpg15to20.RData")
+save(filter, file = "csv/mpg15to20.csv")
+```
+
+```{r}
+rym <- read.csv("csv/rate_your_music.csv")
+View(rym)
+```

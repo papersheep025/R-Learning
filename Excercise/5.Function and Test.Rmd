@@ -1,0 +1,21 @@
+# *Function and Test*
+
+## Average
+
+```{r}
+average <- function(x) {
+  sum(x) / length(x)
+}
+```
+
+Handle non-numeric input with message
+
+```{r}
+average <- function(x) {
+  if (!is.numeric(x)) {
+    message("`x` must be a numeric vector. Returning NA instead.")
+    return(NA)
+  }
+  sum(x) / length(x)
+}
+```
